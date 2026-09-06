@@ -1,0 +1,88 @@
+@model ClienteHomeViewModel
+@{
+    ViewData["Title"] = "Mis productos";
+}
+
+<h2 class="abp-page-title">Mis productos financieros</h2>
+<div class="abp-divider-accent"></div>
+
+@if (Model.SinProductos)
+{
+    <div class="alert alert-info">@Mensajes.SinProductos</div>
+}
+else
+{
+    @if (Model.Cuentas.Count > 0)
+    {
+        <h5 class="abp-page-title mt-2">Cuentas de ahorro</h5>
+        <div class="row g-3 mb-4">
+            @foreach (var cuenta in Model.Cuentas)
+            {
+                <div class="col-xl-4 col-md-6">
+                    <div class="card abp-producto-card h-100">
+                        <div class="card-body">
+                            <div class="abp-producto-tipo">
+                                Cuenta de ahorro @(cuenta.Type == AccountType.Principal ? "· Principal" : "· Secundaria")
+                            </div>
+                            <div class="abp-producto-numero fs-5 my-1">@cuenta.AccountNumber</div>
+                            <div class="abp-producto-balance">@Formato.Monto(cuenta.Balance)</div>
+                            <a class="btn btn-sm btn-outline-primary mt-2"
+                               asp-action="DetalleCuenta" asp-route-id="@cuenta.AccountNumber">Ver detalle</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.Prestamos.Count > 0)
+    {
+        <h5 class="abp-page-title">Préstamos</h5>
+        <div class="row g-3 mb-4">
+            @foreach (var prestamo in Model.Prestamos)
+            {
+                <div class="col-xl-4 col-md-6">
+                    <div class="card abp-producto-card h-100">
+                        <div class="card-body">
+                            <div class="abp-producto-tipo">Préstamo</div>
+                            <div class="abp-producto-numero fs-5 my-1">@prestamo.LoanNumber</div>
+                            <div class="abp-producto-balance">@Formato.Monto(prestamo.PendingAmount)</div>
+                            <div class="text-muted small">
+                                Pendiente · @prestamo.PaidInstallments/@prestamo.TotalInstallments cuotas pagadas
+                                <span class="badge badge-estado @(prestamo.IsInArrears ? "badge-mora" : "badge-aldia") ms-1">
+                                    @(prestamo.IsInArrears ? "En mora" : "Al día")
+                                </span>
+                            </div>
+                            <a class="btn btn-sm btn-outline-primary mt-2"
+                               asp-action="DetallePrestamo" asp-route-id="@prestamo.Id">Ver detalle</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.Tarjetas.Count > 0)
+    {
+        <h5 class="abp-page-title">Tarjetas de crédito</h5>
+        <div class="row g-3 mb-4">
+            @foreach (var tarjeta in Model.Tarjetas)
+            {
+                <div class="col-xl-4 col-md-6">
+                    <div class="card abp-producto-card abp-card-credito h-100">
+                        <div class="card-body">
+                            <div class="abp-producto-tipo">Tarjeta de crédito · Exp. @tarjeta.ExpirationDisplay</div>
+                            <div class="abp-producto-numero fs-5 my-1">@tarjeta.MaskedCardNumber</div>
+                            <div class="abp-producto-balance">@Formato.Monto(tarjeta.AvailableCredit)</div>
+                            <div class="small" style="color: rgba(255,255,255,.7);">
+                                Disponible · Deuda @Formato.Monto(tarjeta.OwedAmount) · Límite @Formato.Monto(tarjeta.CreditLimit)
+                            </div>
+                            <a class="btn btn-sm btn-accent mt-2"
+                               asp-action="DetalleTarjeta" asp-route-id="@tarjeta.Id">Ver detalle</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

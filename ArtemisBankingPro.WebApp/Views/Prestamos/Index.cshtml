@@ -1,0 +1,97 @@
+@model PrestamosIndexViewModel
+@{
+    ViewData["Title"] = "Gestión de préstamos";
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h2 class="abp-page-title">Gestión de préstamos</h2>
+        <div class="abp-divider-accent"></div>
+    </div>
+    <a class="btn btn-primary" asp-action="Asignar">Asignar préstamo</a>
+</div>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="estado" class="form-select">
+            @foreach (var estado in new[] { "Activos", "Completados", "Todos" })
+            {
+                @if (Model.Estado == estado)
+                {
+                    <option value="@estado" selected>@estado</option>
+                }
+                else
+                {
+                    <option value="@estado">@estado</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="cedula" value="@Model.Cedula" class="form-control" placeholder="Buscar por cédula" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+    </div>
+</form>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table abp-table mb-0">
+            <thead>
+            <tr>
+                <th>Nº préstamo</th>
+                <th>Cliente</th>
+                <th>Capital</th>
+                <th>Cuotas totales</th>
+                <th>Cuotas pagadas</th>
+                <th>Pendiente</th>
+                <th>Tasa anual</th>
+                <th>Plazo</th>
+                <th>Estado</th>
+                <th>Estado del cliente</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Prestamos.Items.Count == 0)
+            {
+                <tr><td colspan="11" class="text-center text-muted py-4">No hay préstamos para mostrar.</td></tr>
+            }
+            @foreach (var prestamo in Model.Prestamos.Items)
+            {
+                <tr>
+                    <td>@prestamo.LoanNumber</td>
+                    <td>@prestamo.ClientFullName</td>
+                    <td class="abp-monto">@Formato.Monto(prestamo.ApprovedAmount)</td>
+                    <td>@prestamo.TotalInstallments</td>
+                    <td>@prestamo.PaidInstallments</td>
+                    <td class="abp-monto">@Formato.Monto(prestamo.PendingAmount)</td>
+                    <td>@prestamo.AnnualInterestRate.ToString("0.##")%</td>
+                    <td>@prestamo.TermMonths meses</td>
+                    <td>
+                        <span class="badge badge-estado @(prestamo.Status == LoanStatus.Activo ? "badge-activo" : "badge-completado")">
+                            @(prestamo.Status == LoanStatus.Activo ? "Activo" : "Completado")
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge badge-estado @(prestamo.IsInArrears ? "badge-mora" : "badge-aldia")">
+                            @(prestamo.IsInArrears ? "En mora" : "Al día")
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Detalle" asp-route-id="@prestamo.Id">Detalle</a>
+                        @if (prestamo.Status == LoanStatus.Activo)
+                        {
+                            <a class="btn btn-sm btn-outline-primary" asp-action="EditarTasa" asp-route-id="@prestamo.Id">Editar</a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Paginacion"
+         model="@PaginacionViewModel.De(Model.Prestamos, ruta: new Dictionary<string, string> { ["estado"] = Model.Estado, ["cedula"] = Model.Cedula ?? string.Empty })" />

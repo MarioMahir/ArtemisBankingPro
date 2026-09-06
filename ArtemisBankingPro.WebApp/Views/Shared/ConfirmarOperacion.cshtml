@@ -1,0 +1,42 @@
+@model ConfirmarOperacionViewModel
+@{
+    ViewData["Title"] = Model.Titulo;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <h2 class="abp-page-title">@Model.Titulo</h2>
+        <div class="abp-divider-accent"></div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Advertencia))
+        {
+            <div class="alert alert-warning" role="alert">@Model.Advertencia</div>
+        }
+
+        <div class="card">
+            <div class="card-header">Detalle de la operación</div>
+            <div class="card-body">
+                <dl class="row abp-confirm-detail mb-0">
+                    @foreach (var detalle in Model.Detalles)
+                    {
+                        <dt class="col-sm-6">@detalle.Key</dt>
+                        <dd class="col-sm-6">@detalle.Value</dd>
+                    }
+                </dl>
+            </div>
+            <div class="card-footer bg-white">
+                <p class="fw-semibold mb-3">@Model.Pregunta</p>
+                <form asp-controller="@Model.Controlador" asp-action="@Model.Accion" method="post" class="d-flex gap-2 justify-content-end">
+                    @foreach (var campo in Model.Campos)
+                    {
+                        <input type="hidden" name="@campo.Key" value="@campo.Value" />
+                    }
+                    <a class="btn btn-outline-secondary"
+                       asp-controller="@(Model.CancelarControlador ?? Model.Controlador)"
+                       asp-action="@Model.CancelarAccion">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">@Model.TextoBoton</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

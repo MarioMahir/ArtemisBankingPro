@@ -1,0 +1,30 @@
+@model SolicitarResetViewModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Restablecer contraseña";
+}
+
+<h1 class="h5 text-center mb-3">Restablecer contraseña</h1>
+<p class="abp-page-subtitle text-center">
+    Ingrese su nombre de usuario y le enviaremos un enlace de restablecimiento al correo registrado.
+</p>
+
+<form asp-action="SolicitarReset" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label"></label>
+        <input asp-for="UserName" class="form-control" autofocus />
+        <span asp-validation-for="UserName" class="text-validation"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Enviar enlace</button>
+</form>
+
+<div class="text-center mt-3">
+    <a asp-action="Login">Volver al inicio de sesión</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

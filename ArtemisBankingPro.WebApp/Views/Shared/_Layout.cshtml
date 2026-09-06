@@ -1,0 +1,93 @@
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ArtemisBank Pro</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark abp-navbar mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                Artemis<span class="abp-brand-accent">Bank</span> Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#abpNavbar"
+                    aria-controls="abpNavbar" aria-expanded="false" aria-label="Mostrar menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="abpNavbar">
+                <ul class="navbar-nav me-auto">
+                    @if (User.IsInRole(Roles.Administrador))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Usuarios" asp-action="Index">Gestión de usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Prestamos" asp-action="Index">Gestión de préstamos</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Tarjetas" asp-action="Index">Gestión de tarjetas de crédito</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cuentas" asp-action="Index">Gestión de cuentas de ahorro</a></li>
+                    }
+                    else if (User.IsInRole(Roles.Cajero))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="Deposito">Depósito</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="Retiro">Retiro</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="PagoTarjeta">Pago a tarjeta de crédito</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="PagoPrestamo">Pago a préstamo</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cajero" asp-action="Terceros">Transacciones a cuentas de terceros</a></li>
+                    }
+                    else if (User.IsInRole(Roles.Cliente))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Cliente" asp-action="Index">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Transacciones
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Transacciones" asp-action="Express">Express</a></li>
+                                <li><a class="dropdown-item" asp-controller="Transacciones" asp-action="PagoTarjeta">Tarjeta de crédito</a></li>
+                                <li><a class="dropdown-item" asp-controller="Transacciones" asp-action="PagoPrestamo">Préstamo</a></li>
+                                <li><a class="dropdown-item" asp-controller="Transacciones" asp-action="PagoBeneficiario">Beneficiarios</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Beneficiarios" asp-action="Index">Beneficiarios</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Avance" asp-action="Index">Avance de efectivo</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Transferencia" asp-action="Index">Transferencia</a></li>
+                    }
+                </ul>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="navbar-text text-white">
+                            @User.Identity!.Name
+                            <span class="badge badge-rol ms-1">@User.FindFirstValue(ClaimTypes.Role)</span>
+                        </span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-accent">Cerrar sesión</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container pb-4">
+    <main role="main">
+        <partial name="_StatusMessages" />
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="abp-footer py-3 mt-auto">
+    <div class="container">
+        &copy; @DateTime.Now.Year - Artemis<span class="abp-brand-accent fw-semibold">Bank</span> Pro — Banca segura en RD$
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,223 @@
+/* =========================================================
+   Artemis Banking Pro — tema visual
+   Paleta bancaria sobria: azul profundo + dorado, sobre Bootstrap 5.
+   ========================================================= */
+
+:root {
+  --abp-primary: #0f2a4a;      /* azul marino profundo */
+  --abp-primary-hover: #163a63;
+  --abp-accent: #c9a227;       /* dorado sobrio */
+  --abp-accent-soft: #f4ead0;
+  --abp-surface: #f6f8fb;      /* fondo general */
+  --abp-card-border: #e3e8ef;
+  --abp-success: #1d7a4f;
+  --abp-danger: #b3372f;
+  --abp-muted: #6b7a90;
+  --abp-radius: .75rem;
+  --abp-shadow: 0 1px 3px rgba(15, 42, 74, .08), 0 4px 16px rgba(15, 42, 74, .06);
+}
+
+html { font-size: 15px; position: relative; min-height: 100%; }
+body {
+  background-color: var(--abp-surface);
+  color: #1c2733;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- Navbar por rol ---------- */
+.abp-navbar {
+  background: linear-gradient(90deg, var(--abp-primary) 0%, #16385e 100%);
+  box-shadow: var(--abp-shadow);
+}
+.abp-navbar .navbar-brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.abp-navbar .navbar-brand .abp-brand-accent { color: var(--abp-accent); }
+.abp-navbar .nav-link {
+  color: rgba(255, 255, 255, .82);
+  border-radius: .5rem;
+  padding: .45rem .85rem;
+  transition: background-color .15s ease, color .15s ease;
+}
+.abp-navbar .nav-link:hover { color: #fff; background-color: rgba(255, 255, 255, .08); }
+.abp-navbar .nav-link.active {
+  color: #fff;
+  background-color: rgba(201, 162, 39, .22);
+  font-weight: 600;
+}
+.abp-navbar .badge-rol {
+  background-color: var(--abp-accent);
+  color: #23272b;
+  font-weight: 600;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  border: 1px solid var(--abp-card-border);
+  border-radius: var(--abp-radius);
+  box-shadow: var(--abp-shadow);
+}
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid var(--abp-card-border);
+  font-weight: 600;
+  color: var(--abp-primary);
+}
+
+/* Tarjetas de indicadores del dashboard */
+.abp-stat-card {
+  border-left: .3rem solid var(--abp-primary);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.abp-stat-card:hover { transform: translateY(-2px); }
+.abp-stat-card .abp-stat-label {
+  color: var(--abp-muted);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .15rem;
+}
+.abp-stat-card .abp-stat-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--abp-primary);
+  font-variant-numeric: tabular-nums;
+}
+.abp-stat-card.stat-accent { border-left-color: var(--abp-accent); }
+.abp-stat-card.stat-success { border-left-color: var(--abp-success); }
+.abp-stat-card.stat-danger { border-left-color: var(--abp-danger); }
+.abp-stat-card .abp-stat-icon {
+  width: 2.6rem; height: 2.6rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: .6rem;
+  background-color: var(--abp-accent-soft);
+  color: var(--abp-primary);
+  font-size: 1.2rem;
+}
+
+/* ---------- Botones ---------- */
+.btn-primary {
+  --bs-btn-bg: var(--abp-primary);
+  --bs-btn-border-color: var(--abp-primary);
+  --bs-btn-hover-bg: var(--abp-primary-hover);
+  --bs-btn-hover-border-color: var(--abp-primary-hover);
+  --bs-btn-active-bg: var(--abp-primary-hover);
+  --bs-btn-active-border-color: var(--abp-primary-hover);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--abp-primary);
+  --bs-btn-border-color: var(--abp-primary);
+  --bs-btn-hover-bg: var(--abp-primary);
+  --bs-btn-hover-border-color: var(--abp-primary);
+  --bs-btn-active-bg: var(--abp-primary);
+  --bs-btn-active-border-color: var(--abp-primary);
+}
+.btn-accent {
+  background-color: var(--abp-accent);
+  border-color: var(--abp-accent);
+  color: #23272b;
+  font-weight: 600;
+}
+.btn-accent:hover { background-color: #b8931f; border-color: #b8931f; color: #23272b; }
+
+.btn:focus-visible, .form-control:focus, .form-select:focus {
+  border-color: var(--abp-primary);
+  box-shadow: 0 0 0 .2rem rgba(15, 42, 74, .15);
+}
+
+/* ---------- Tablas ---------- */
+.abp-table thead th {
+  background-color: var(--abp-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.abp-table tbody td { vertical-align: middle; }
+.abp-table tbody tr:hover { background-color: #eef2f8; }
+.abp-monto { font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+
+/* ---------- Badges de estado ---------- */
+.badge-estado { font-size: .78rem; padding: .38em .7em; font-weight: 600; border-radius: 2rem; }
+.badge-activo    { background-color: #e2f3ea; color: var(--abp-success); }
+.badge-inactivo,
+.badge-cancelado { background-color: #f8e5e3; color: var(--abp-danger); }
+.badge-completado{ background-color: #e8ecf3; color: var(--abp-primary); }
+.badge-mora      { background-color: #f8e5e3; color: var(--abp-danger); }
+.badge-aldia     { background-color: #e2f3ea; color: var(--abp-success); }
+.badge-pendiente { background-color: #fdf3d7; color: #8a6d1a; }
+.badge-parcial   { background-color: #fdeacc; color: #9a5b13; }
+
+/* ---------- Productos financieros (Home cliente) ---------- */
+.abp-producto-card { position: relative; overflow: hidden; }
+.abp-producto-card .abp-producto-tipo {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--abp-muted);
+}
+.abp-producto-card .abp-producto-numero {
+  font-family: "Cascadia Code", Consolas, monospace;
+  letter-spacing: .12em;
+  color: var(--abp-primary);
+}
+.abp-producto-card .abp-producto-balance {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--abp-primary);
+  font-variant-numeric: tabular-nums;
+}
+.abp-card-credito {
+  background: linear-gradient(135deg, var(--abp-primary) 0%, #1d4470 60%, #2a5688 100%);
+  color: #fff;
+  border: none;
+}
+.abp-card-credito .abp-producto-tipo { color: rgba(255,255,255,.7); }
+.abp-card-credito .abp-producto-numero { color: #fff; }
+.abp-card-credito .abp-producto-balance { color: var(--abp-accent); }
+
+/* ---------- Formularios y auth ---------- */
+.abp-auth-wrapper {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--abp-primary) 0%, #1b3f68 55%, #24507f 100%);
+}
+.abp-auth-card { width: 100%; max-width: 430px; border: none; }
+.abp-auth-card .abp-auth-logo {
+  font-size: 1.6rem; font-weight: 700; color: var(--abp-primary);
+}
+.abp-auth-card .abp-auth-logo .abp-brand-accent { color: var(--abp-accent); }
+
+.form-label { font-weight: 600; color: var(--abp-primary); font-size: .9rem; }
+.text-validation, .field-validation-error { color: var(--abp-danger); font-size: .85rem; }
+.input-validation-error { border-color: var(--abp-danger); }
+
+/* ---------- Paginación ---------- */
+.pagination .page-link { color: var(--abp-primary); }
+.pagination .page-item.active .page-link {
+  background-color: var(--abp-primary);
+  border-color: var(--abp-primary);
+}
+
+/* ---------- Utilidades ---------- */
+.abp-page-title { color: var(--abp-primary); font-weight: 700; }
+.abp-page-subtitle { color: var(--abp-muted); }
+.abp-divider-accent {
+  width: 3.2rem; height: .25rem;
+  background-color: var(--abp-accent);
+  border-radius: 1rem;
+  margin: .4rem 0 1.2rem;
+}
+.abp-confirm-detail dt { color: var(--abp-muted); font-weight: 500; }
+.abp-confirm-detail dd { font-weight: 600; color: var(--abp-primary); }
+
+footer.abp-footer {
+  color: var(--abp-muted);
+  font-size: .85rem;
+  border-top: 1px solid var(--abp-card-border);
+  background-color: #fff;
+}

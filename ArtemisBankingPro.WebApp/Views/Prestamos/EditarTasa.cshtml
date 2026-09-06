@@ -1,0 +1,45 @@
+@model EditarTasaViewModel
+@{
+    ViewData["Title"] = "Editar tasa de interés";
+}
+
+<h2 class="abp-page-title">Editar tasa de interés</h2>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header">
+                Préstamo <strong>@Model.LoanNumber</strong> — @Model.ClienteNombre
+            </div>
+            <div class="card-body">
+                <p class="abp-page-subtitle">
+                    Tasa actual: <strong>@Model.TasaActual.ToString("0.##")%</strong>.
+                    Solo se recalculan las cuotas pendientes con vencimiento futuro.
+                </p>
+                <form asp-action="EditarTasa" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+                    <input type="hidden" asp-for="LoanId" />
+                    <input type="hidden" asp-for="LoanNumber" />
+                    <input type="hidden" asp-for="ClienteNombre" />
+                    <input type="hidden" asp-for="TasaActual" />
+
+                    <div class="mb-3">
+                        <label asp-for="NuevaTasa" class="form-label"></label>
+                        <input asp-for="NuevaTasa" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="NuevaTasa" class="text-validation"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Actualizar tasa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

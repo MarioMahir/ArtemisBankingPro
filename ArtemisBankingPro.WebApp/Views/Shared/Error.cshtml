@@ -1,0 +1,23 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-6 col-md-8">
+        <div class="card text-center">
+            <div class="card-body p-4">
+                <div style="font-size:3rem;">⚠️</div>
+                <h2 class="abp-page-title">@Model.Title</h2>
+                <div class="abp-divider-accent mx-auto"></div>
+                <p class="abp-page-subtitle">@Model.Detail</p>
+                <p class="text-muted small mb-1">Código: @Model.Status</p>
+                @if (Model.ShowRequestId)
+                {
+                    <p class="text-muted small">Id de solicitud: <code>@Model.RequestId</code></p>
+                }
+                <a class="btn btn-primary mt-2" asp-controller="Home" asp-action="Index">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+@model PagoTarjetaCajeroViewModel
+@{
+    ViewData["Title"] = "Pago a tarjeta de crédito";
+}
+
+<h2 class="abp-page-title">Pago a tarjeta de crédito</h2>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="PagoTarjeta" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="AccountNumber" class="form-label"></label>
+                        <input asp-for="AccountNumber" class="form-control" maxlength="9" autofocus />
+                        <span asp-validation-for="AccountNumber" class="text-validation"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CardNumber" class="form-label"></label>
+                        <input asp-for="CardNumber" class="form-control" maxlength="16" autocomplete="off" />
+                        <span asp-validation-for="CardNumber" class="text-validation"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Amount" class="form-label"></label>
+                        <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" />
+                        <span asp-validation-for="Amount" class="text-validation"></span>
+                        <div class="form-text">Si el monto excede la deuda, solo se debitará la deuda real.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

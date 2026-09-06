@@ -1,0 +1,139 @@
+@model UsuariosIndexViewModel
+@{
+    ViewData["Title"] = "Gestión de usuarios";
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h2 class="abp-page-title">Gestión de usuarios</h2>
+        <div class="abp-divider-accent"></div>
+    </div>
+    <a class="btn btn-primary" asp-action="Crear">Crear usuario</a>
+</div>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="rol" class="form-select" onchange="this.form.submit()">
+            @if (string.IsNullOrEmpty(Model.Rol))
+            {
+                <option value="" selected>Todos los roles</option>
+            }
+            else
+            {
+                <option value="">Todos los roles</option>
+            }
+            @foreach (var rol in new[] { Roles.Administrador, Roles.Cajero, Roles.Cliente })
+            {
+                @if (Model.Rol == rol)
+                {
+                    <option value="@rol" selected>@rol</option>
+                }
+                else
+                {
+                    <option value="@rol">@rol</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <noscript><button type="submit" class="btn btn-outline-primary">Filtrar</button></noscript>
+    </div>
+</form>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table abp-table mb-0">
+            <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Usuarios.Items.Count == 0)
+            {
+                <tr><td colspan="8" class="text-center text-muted py-4">No hay usuarios para mostrar.</td></tr>
+            }
+            @foreach (var usuario in Model.Usuarios.Items)
+            {
+                var esActual = usuario.Id == Model.UsuarioActualId;
+                <tr>
+                    <td>@usuario.UserName</td>
+                    <td>@usuario.Identification</td>
+                    <td>@usuario.FirstName</td>
+                    <td>@usuario.LastName</td>
+                    <td>@usuario.Email</td>
+                    <td>@usuario.Role</td>
+                    <td>
+                        <span class="badge badge-estado @(usuario.IsActive ? "badge-activo" : "badge-inactivo")">
+                            @(usuario.IsActive ? "Activo" : "Inactivo")
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        @if (!esActual)
+                        {
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Editar" asp-route-id="@usuario.Id">Editar</a>
+                            <button type="button"
+                                    class="btn btn-sm @(usuario.IsActive ? "btn-outline-danger" : "btn-outline-success")"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEstado"
+                                    data-usuario-id="@usuario.Id"
+                                    data-activar="@(usuario.IsActive ? "false" : "true")"
+                                    data-pregunta="@(usuario.IsActive ? Mensajes.ConfirmarInactivarUsuario : Mensajes.ConfirmarActivarUsuario)">
+                                @(usuario.IsActive ? "Inactivar" : "Activar")
+                            </button>
+                        }
+                        else
+                        {
+                            <span class="text-muted small">Usuario actual</span>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Paginacion"
+         model="@PaginacionViewModel.De(Model.Usuarios, ruta: new Dictionary<string, string> { ["rol"] = Model.Rol ?? string.Empty })" />
+
+@* Modal de confirmación de cambio de estado *@
+<div class="modal fade" id="modalEstado" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalEstadoPregunta" class="mb-0"></p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="CambiarEstado" method="post">
+                    <input type="hidden" name="id" id="modalEstadoId" />
+                    <input type="hidden" name="activar" id="modalEstadoActivar" />
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('modalEstado').addEventListener('show.bs.modal', function (event) {
+            const boton = event.relatedTarget;
+            document.getElementById('modalEstadoPregunta').textContent = boton.getAttribute('data-pregunta');
+            document.getElementById('modalEstadoId').value = boton.getAttribute('data-usuario-id');
+            document.getElementById('modalEstadoActivar').value = boton.getAttribute('data-activar');
+        });
+    </script>
+}

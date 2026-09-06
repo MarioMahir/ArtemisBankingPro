@@ -1,0 +1,71 @@
+@model CreditCardDto
+@{
+    ViewData["Title"] = $"Tarjeta {Model.LastFourDigits}";
+}
+
+<h2 class="abp-page-title">Tarjeta <span class="abp-producto-numero">@Model.MaskedCardNumber</span></h2>
+<div class="abp-divider-accent"></div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row abp-confirm-detail mb-0">
+            <dt class="col-sm-3">Cliente</dt>
+            <dd class="col-sm-3">@Model.ClientFullName</dd>
+            <dt class="col-sm-3">Cédula</dt>
+            <dd class="col-sm-3">@Model.ClientIdentification</dd>
+            <dt class="col-sm-3">Límite de crédito</dt>
+            <dd class="col-sm-3">@Formato.Monto(Model.CreditLimit)</dd>
+            <dt class="col-sm-3">Deuda</dt>
+            <dd class="col-sm-3">@Formato.Monto(Model.OwedAmount)</dd>
+            <dt class="col-sm-3">Crédito disponible</dt>
+            <dd class="col-sm-3">@Formato.Monto(Model.AvailableCredit)</dd>
+            <dt class="col-sm-3">Expiración</dt>
+            <dd class="col-sm-3">@Model.ExpirationDisplay</dd>
+            <dt class="col-sm-3">Estado</dt>
+            <dd class="col-sm-3">
+                <span class="badge badge-estado @(Model.Status == ProductStatus.Activa ? "badge-activo" : "badge-cancelado")">
+                    @(Model.Status == ProductStatus.Activa ? "Activa" : "Cancelada")
+                </span>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<h5 class="abp-page-title">Consumos</h5>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table abp-table mb-0">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Comercio</th>
+                <th>Monto</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Consumptions.Count == 0)
+            {
+                <tr><td colspan="4" class="text-center text-muted py-4">Esta tarjeta no tiene consumos registrados.</td></tr>
+            }
+            @foreach (var consumo in Model.Consumptions)
+            {
+                <tr>
+                    <td>@Formato.FechaHora(consumo.CreatedAt)</td>
+                    <td>@consumo.CommerceName</td>
+                    <td class="abp-monto">@Formato.Monto(consumo.Amount)</td>
+                    <td>
+                        <span class="badge badge-estado @(consumo.Status == ConsumptionStatus.Aprobado ? "badge-activo" : "badge-cancelado")">
+                            @(consumo.Status == ConsumptionStatus.Aprobado ? "APROBADO" : "RECHAZADO")
+                        </span>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Volver al listado</a>
+</div>

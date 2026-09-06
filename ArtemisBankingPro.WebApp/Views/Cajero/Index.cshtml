@@ -1,0 +1,55 @@
+@model CashierDashboardDto
+@{
+    ViewData["Title"] = "Home cajero";
+}
+
+<h2 class="abp-page-title">Panel del cajero</h2>
+<p class="abp-page-subtitle">Sus operaciones del día de hoy</p>
+<div class="abp-divider-accent"></div>
+
+<div class="row g-3">
+    <div class="col-xl-3 col-md-6">
+        <div class="card abp-stat-card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="abp-stat-icon">🔁</div>
+                <div>
+                    <div class="abp-stat-label">Transacciones del día</div>
+                    <div class="abp-stat-value">@Model.TransactionsToday.ToString("#,##0")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card abp-stat-card stat-accent h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="abp-stat-icon">🧾</div>
+                <div>
+                    <div class="abp-stat-label">Pagos del día</div>
+                    <div class="abp-stat-value">@Model.PaymentsToday.ToString("#,##0")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card abp-stat-card stat-success h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="abp-stat-icon">📥</div>
+                <div>
+                    <div class="abp-stat-label">Depósitos del día</div>
+                    <div class="abp-stat-value">@Model.DepositsToday.ToString("#,##0")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card abp-stat-card stat-danger h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="abp-stat-icon">📤</div>
+                <div>
+                    <div class="abp-stat-label">Retiros del día</div>
+                    <div class="abp-stat-value">@Model.WithdrawalsToday.ToString("#,##0")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

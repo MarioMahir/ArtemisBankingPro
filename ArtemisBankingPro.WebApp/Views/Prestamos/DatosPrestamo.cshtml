@@ -1,0 +1,58 @@
+@model DatosPrestamoViewModel
+@{
+    ViewData["Title"] = "Asignar préstamo";
+}
+
+<h2 class="abp-page-title">Asignar préstamo — Paso 2: condiciones</h2>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                Cliente: <strong>@Model.ClienteNombre</strong>
+                @if (!string.IsNullOrEmpty(Model.ClienteCedula))
+                {
+                    <span class="text-muted">— Cédula @Model.ClienteCedula</span>
+                }
+            </div>
+            <div class="card-body">
+                <form asp-action="DatosPrestamo" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+                    <input type="hidden" asp-for="ClientId" />
+
+                    <div class="mb-3">
+                        <label asp-for="TermInMonths" class="form-label"></label>
+                        <select asp-for="TermInMonths" class="form-select">
+                            <option value="">Seleccione el plazo...</option>
+                            @foreach (var plazo in AppConstants.AllowedLoanTerms)
+                            {
+                                <option value="@plazo">@plazo meses</option>
+                            }
+                        </select>
+                        <span asp-validation-for="TermInMonths" class="text-validation"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CapitalAmount" class="form-label"></label>
+                        <input asp-for="CapitalAmount" class="form-control" type="number" step="0.01" min="0.01" />
+                        <span asp-validation-for="CapitalAmount" class="text-validation"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="AnnualInterestRate" class="form-label"></label>
+                        <input asp-for="AnnualInterestRate" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="AnnualInterestRate" class="text-validation"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-secondary" asp-action="Asignar">Volver</a>
+                        <button type="submit" class="btn btn-primary">Asignar préstamo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

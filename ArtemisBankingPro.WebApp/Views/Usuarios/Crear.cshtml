@@ -1,0 +1,98 @@
+@model CrearUsuarioViewModel
+@{
+    ViewData["Title"] = "Crear usuario";
+}
+
+<h2 class="abp-page-title">Crear usuario</h2>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Crear" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Identification" class="form-label"></label>
+                            <input asp-for="Identification" class="form-control" />
+                            <span asp-validation-for="Identification" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="UserName" class="form-label"></label>
+                            <input asp-for="UserName" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="UserName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Role" class="form-label"></label>
+                            <select asp-for="Role" class="form-select" id="selectTipoUsuario">
+                                <option value="">Seleccione...</option>
+                                <option value="@Roles.Administrador">@Roles.Administrador</option>
+                                <option value="@Roles.Cajero">@Roles.Cajero</option>
+                                <option value="@Roles.Cliente">@Roles.Cliente</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="Password" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-validation"></span>
+                        </div>
+                        @* Monto inicial: visible SOLO cuando el tipo seleccionado es Cliente *@
+                        <div class="col-md-6 mb-3 d-none" id="grupoMontoInicial">
+                            <label asp-for="InitialAmount" class="form-label"></label>
+                            <input asp-for="InitialAmount" class="form-control" type="number" step="0.01" min="0" />
+                            <span asp-validation-for="InitialAmount" class="text-validation"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Crear usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const select = document.getElementById('selectTipoUsuario');
+            const grupo = document.getElementById('grupoMontoInicial');
+            function actualizar() {
+                if (select.value === '@Roles.Cliente') {
+                    grupo.classList.remove('d-none');
+                } else {
+                    grupo.classList.add('d-none');
+                    grupo.querySelector('input').value = '';
+                }
+            }
+            select.addEventListener('change', actualizar);
+            actualizar();
+        })();
+    </script>
+}

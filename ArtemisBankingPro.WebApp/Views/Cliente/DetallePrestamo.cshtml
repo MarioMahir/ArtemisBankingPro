@@ -1,0 +1,91 @@
+@model LoanDto
+@{
+    ViewData["Title"] = $"Préstamo {Model.LoanNumber}";
+}
+
+<h2 class="abp-page-title">Préstamo <span class="abp-producto-numero">@Model.LoanNumber</span></h2>
+<div class="abp-divider-accent"></div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row abp-confirm-detail mb-0">
+            <dt class="col-sm-3">Capital</dt>
+            <dd class="col-sm-3">@Formato.Monto(Model.ApprovedAmount)</dd>
+            <dt class="col-sm-3">Tasa anual</dt>
+            <dd class="col-sm-3">@Model.AnnualInterestRate.ToString("0.##")%</dd>
+            <dt class="col-sm-3">Plazo</dt>
+            <dd class="col-sm-3">@Model.TermMonths meses</dd>
+            <dt class="col-sm-3">Pendiente</dt>
+            <dd class="col-sm-3">@Formato.Monto(Model.PendingAmount)</dd>
+            <dt class="col-sm-3">Cuotas pagadas</dt>
+            <dd class="col-sm-3">@Model.PaidInstallments / @Model.TotalInstallments</dd>
+            <dt class="col-sm-3">Estado</dt>
+            <dd class="col-sm-3">
+                <span class="badge badge-estado @(Model.IsInArrears ? "badge-mora" : "badge-aldia")">
+                    @(Model.IsInArrears ? "En mora" : "Al día")
+                </span>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<h5 class="abp-page-title">Tabla de amortización</h5>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table abp-table mb-0">
+            <thead>
+            <tr>
+                <th>Nº</th>
+                <th>Vencimiento</th>
+                <th>Valor cuota</th>
+                <th>Interés</th>
+                <th>Capital</th>
+                <th>Pendiente</th>
+                <th>Estado</th>
+                <th>Atraso</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var cuota in Model.Installments)
+            {
+                <tr>
+                    <td>@cuota.Number</td>
+                    <td>@Formato.Fecha(cuota.DueDate)</td>
+                    <td class="abp-monto">@Formato.Monto(cuota.Value)</td>
+                    <td class="abp-monto">@Formato.Monto(cuota.InterestAmount)</td>
+                    <td class="abp-monto">@Formato.Monto(cuota.PrincipalAmount)</td>
+                    <td class="abp-monto">@Formato.Monto(cuota.PendingAmount)</td>
+                    <td>
+                        @switch (cuota.Status)
+                        {
+                            case InstallmentStatus.Pagada:
+                                <span class="badge badge-estado badge-activo">Pagada</span>
+                                break;
+                            case InstallmentStatus.ParcialmentePagada:
+                                <span class="badge badge-estado badge-parcial">Parcialmente pagada</span>
+                                break;
+                            default:
+                                <span class="badge badge-estado badge-pendiente">Pendiente</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @if (cuota.IsOverdue)
+                        {
+                            <span class="badge badge-estado badge-mora">Atrasada</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Volver a mis productos</a>
+</div>

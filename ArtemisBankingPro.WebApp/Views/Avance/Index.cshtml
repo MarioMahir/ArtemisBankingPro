@@ -1,0 +1,70 @@
+@model AvanceViewModel
+@{
+    ViewData["Title"] = "Avance de efectivo";
+}
+
+<h2 class="abp-page-title">Avance de efectivo</h2>
+<p class="abp-page-subtitle">Interés fijo del 6.25% sobre el monto del avance.</p>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Tarjetas.Count == 0 || Model.Cuentas.Count == 0)
+                {
+                    <div class="alert alert-info mb-0">
+                        Necesita al menos una tarjeta de crédito activa y una cuenta de ahorro activa para solicitar un avance.
+                    </div>
+                }
+                else
+                {
+                    <form asp-action="Index" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="CardId" class="form-label"></label>
+                            <select asp-for="CardId" class="form-select">
+                                <option value="">Seleccione...</option>
+                                @foreach (var tarjeta in Model.Tarjetas)
+                                {
+                                    <option value="@tarjeta.Id">
+                                        @tarjeta.MaskedCardNumber — Disponible @Formato.Monto(tarjeta.AvailableCredit)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="CardId" class="text-validation"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="DestinationAccountNumber" class="form-label"></label>
+                            <select asp-for="DestinationAccountNumber" class="form-select">
+                                <option value="">Seleccione...</option>
+                                @foreach (var cuenta in Model.Cuentas)
+                                {
+                                    <option value="@cuenta.AccountNumber">
+                                        @cuenta.AccountNumber — @Formato.Monto(cuenta.Balance)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="DestinationAccountNumber" class="text-validation"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Amount" class="form-label"></label>
+                            <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" />
+                            <span asp-validation-for="Amount" class="text-validation"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a class="btn btn-outline-secondary" asp-controller="Cliente" asp-action="Index">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Continuar</button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

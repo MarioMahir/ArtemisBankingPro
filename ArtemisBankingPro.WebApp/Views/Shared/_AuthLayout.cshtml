@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ArtemisBank Pro</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+<div class="abp-auth-wrapper p-3">
+    <div class="card abp-auth-card">
+        <div class="card-body p-4">
+            <div class="text-center mb-3">
+                <div class="abp-auth-logo">Artemis<span class="abp-brand-accent">Bank</span> Pro</div>
+                <div class="abp-divider-accent mx-auto"></div>
+            </div>
+            <partial name="_StatusMessages" />
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

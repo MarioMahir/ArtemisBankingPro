@@ -1,0 +1,82 @@
+@model EditarUsuarioViewModel
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+
+<h2 class="abp-page-title">Editar usuario</h2>
+<div class="abp-divider-accent"></div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Editar" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-validation mb-2"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Role" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Identification" class="form-label"></label>
+                            <input asp-for="Identification" class="form-control" />
+                            <span asp-validation-for="Identification" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="UserName" class="form-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tipo de usuario</label>
+                            @* El rol NO es modificable *@
+                            <input class="form-control" value="@Model.Role" disabled />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="Password" class="text-validation"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-validation"></span>
+                        </div>
+                        @if (Model.Role == Roles.Cliente)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="AdditionalAmount" class="form-label"></label>
+                                <input asp-for="AdditionalAmount" class="form-control" type="number" step="0.01" min="0" />
+                                <span asp-validation-for="AdditionalAmount" class="text-validation"></span>
+                                <div class="form-text">Se sumará al balance de la cuenta principal del cliente.</div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
