@@ -1,0 +1,8 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "SqlConnectionString": "Server=.\\MSSQLSERVER01;Database=ArtemisBankingPro;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
+  }
+}
