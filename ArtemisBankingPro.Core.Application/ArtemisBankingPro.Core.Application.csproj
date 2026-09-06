@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArtemisBankingPro.Core.Domain\ArtemisBankingPro.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Se mantiene 14.x: las versiones 15+ requieren clave de licencia comercial (NU1903 aceptado) -->
+    <PackageReference Include="AutoMapper" Version="14.0.0" NoWarn="NU1903" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
