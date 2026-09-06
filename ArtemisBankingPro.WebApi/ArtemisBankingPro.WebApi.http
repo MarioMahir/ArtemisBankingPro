@@ -1,0 +1,35 @@
+@host = http://localhost:5145
+@jwt = PEGUE_AQUI_EL_JWT
+
+### Login (Administrador o Comercio)
+POST {{host}}/account/login
+Content-Type: application/json
+
+{
+  "userName": "admin",
+  "password": "P@ssw0rd!"
+}
+
+### Usuarios (Admin)
+GET {{host}}/api/users?page=1
+Authorization: Bearer {{jwt}}
+
+### Préstamos (Admin)
+GET {{host}}/api/loan?status=activos&page=1
+Authorization: Bearer {{jwt}}
+
+### Tarjetas (Admin)
+GET {{host}}/api/credit-card?status=activas&page=1
+Authorization: Bearer {{jwt}}
+
+### Cuentas de ahorro (Admin)
+GET {{host}}/api/savings-account?status=activa&type=todas&page=1
+Authorization: Bearer {{jwt}}
+
+### Comercios (Admin)
+GET {{host}}/api/commerce?status=activos&page=1
+Authorization: Bearer {{jwt}}
+
+### Hermes Pay — transacciones del comercio
+GET {{host}}/pay/get-transactions/1?page=1
+Authorization: Bearer {{jwt}}
